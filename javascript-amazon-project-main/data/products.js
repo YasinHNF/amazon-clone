@@ -662,7 +662,7 @@ const products = [
     image: "images/products/backpack.jpg",
     name: "BackPack",
     rating: {
-      stars: 4.9,
+      stars: 4.5,
       count: 1298
     },
     priceCents: 800
@@ -673,7 +673,7 @@ const products = [
   image: "images/products/umbrella.jpg",
   name: "Umbrella",
   rating: {
-    stars: 2.1,
+    stars: 2.5,
     count: 5
   },
   priceCents: 15000
