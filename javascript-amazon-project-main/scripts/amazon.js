@@ -1,4 +1,5 @@
 import { cart } from '../data/cart.js';
+import { products } from '../data/products.js';
 
 let productsHTML = '';
 const cartQuantityElement = document.querySelector('.js-cart-quantity');
