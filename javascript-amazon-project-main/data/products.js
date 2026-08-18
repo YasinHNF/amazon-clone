@@ -676,6 +676,6 @@ const products = [
     stars: 2.5,
     count: 5
   },
-  priceCents: 15000
+  priceCents: 1500
   }
 ];
