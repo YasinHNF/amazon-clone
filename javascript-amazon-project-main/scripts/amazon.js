@@ -1,3 +1,5 @@
+import { cart } from '../data/cart.js';
+
 let productsHTML = '';
 const cartQuantityElement = document.querySelector('.js-cart-quantity');
 
@@ -46,7 +48,7 @@ products.forEach(
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-cart-${id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -65,7 +67,7 @@ products.forEach(
 );
 document.querySelector('.js-products-grid').innerHTML += productsHTML;
 
-
+const timeOutIds = [];
 
 
 document.querySelectorAll('.js-add-to-cart').forEach(
@@ -75,6 +77,34 @@ document.querySelectorAll('.js-add-to-cart').forEach(
 
         const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
         const selectedQuantity = Number(quantitySelector.value);
+
+        const addedCartTextEl = document.querySelector(`.js-added-cart-${productId}`);
+
+        addedCartTextEl.classList.add('added-to-cart-visible');
+
+        timeOutIds.forEach(
+          (timeOutInfo, index) => {
+            const { itemId, timeOutId } = timeOutInfo;
+            console.log(itemId, productId);
+            if (itemId === productId) {
+              clearTimeout(timeOutId);
+              timeOutIds.splice(index, 1);
+              console.log(timeOutInfo);
+            };
+          }
+        );
+
+        const timeOutId = setTimeout(
+          () => addedCartTextEl.classList.remove('added-to-cart-visible'),
+          1200
+        );
+
+        timeOutIds.push(
+          {
+            itemId: productId,
+            timeOutId
+          }
+        );
 
         let productExists = false;
 
@@ -94,7 +124,6 @@ document.querySelectorAll('.js-add-to-cart').forEach(
             }
           );
         };
-        console.log(cart);
         
         let cartQuantity = 0;
 
@@ -104,7 +133,7 @@ document.querySelectorAll('.js-add-to-cart').forEach(
           }
         );
         
-        cartQuantityElement.innerText = cartQuantity
+        cartQuantityElement.innerText = cartQuantity;
 
 
       }
