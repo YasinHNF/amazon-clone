@@ -1,7 +1,13 @@
 export const cart = [];
 
 
-export function addToCart(productId) {
+function saveCart() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+
+};
+
+
+export function addToCart(productId, cartQuantityElement) {
   const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
   const selectedQuantity = Number(quantitySelector.value);
 
@@ -25,6 +31,9 @@ export function addToCart(productId) {
     );
   };
 
+  saveCart();
+
+
   let cartQuantity = 0;
 
   cart.forEach(
@@ -34,3 +43,4 @@ export function addToCart(productId) {
   cartQuantityElement.innerText = cartQuantity;
 
 };
+

@@ -108,7 +108,7 @@ document.querySelectorAll('.js-add-to-cart').forEach(
           }
         );
 
-        addToCart(productId);
+        addToCart(productId, cartQuantityElement);
         
 
         
