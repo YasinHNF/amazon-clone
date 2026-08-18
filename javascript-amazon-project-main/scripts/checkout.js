@@ -12,6 +12,7 @@ let itemsQuantity = 0;
 
 function loadProducts() {
     let productsHTML = ''
+    productsContainerEl.innerHTML = '';
 
     cart.forEach(
         cartItem => {
@@ -59,7 +60,8 @@ function loadProducts() {
                     <span class="update-quantity-link link-primary">
                         Update
                     </span>
-                    <span class="delete-quantity-link link-primary">
+                    <span class="delete-quantity-link link-primary js-delete-quantity-link"
+                    data-product-id="${productId}">
                         Delete
                     </span>
                     </div>
@@ -115,14 +117,35 @@ function loadProducts() {
 
         }
     );
+    if (!productsHTML) {
+
+    };
 
     productsContainerEl.innerHTML += productsHTML;
     returnHomeLinkEl.innerText = `${itemsQuantity} items`;
     
+
+    document.querySelectorAll('.js-delete-quantity-link').forEach(
+        link => {
+            link.addEventListener('click',
+                () => {
+                    const productId = link.dataset.productId;
+                    cart.forEach(
+                        (cartItem, index) => {
+                            if (cartItem.productId === productId) {
+                                console.log(cartItem);
+
+                                cart.splice(index, 1);
+                                localStorage.setItem('cart', JSON.stringify(cart));
+                                loadProducts();
+                                return;
+                            }
+                        }
+                    );
+                }
+            );
+        }
+    );
 };
 
 loadProducts();
-
-
-
-
