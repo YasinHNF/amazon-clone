@@ -1,13 +1,19 @@
-export const cart = [];
+export let cart = [];
 
+loadCart();
 
-function saveCart() {
+export function saveCart() {
   localStorage.setItem('cart', JSON.stringify(cart));
+  console.log(cart);
 
 };
 
+export function loadCart() {
+  cart = JSON.parse(localStorage.getItem('cart')) || [];
+};
 
-export function addToCart(productId, cartQuantityElement) {
+
+export function addToCart(productId) {
   const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
   const selectedQuantity = Number(quantitySelector.value);
 
@@ -33,14 +39,33 @@ export function addToCart(productId, cartQuantityElement) {
 
   saveCart();
 
+};
 
-  let cartQuantity = 0;
 
-  cart.forEach(
-    item => cartQuantity += item.quantity
+export function deleteFromCart(productId) {
+  const filteredCart = cart.filter(
+    cartItem => cartItem.productId !== productId
   );
 
-  cartQuantityElement.innerText = cartQuantity;
+  cart = filteredCart;
+  saveCart();
+};
 
+export function updateQuantity(productId, newQuantity) {
+  const product = cart.find(item => item.productId === productId);
+  product.quantity = newQuantity;
+  saveCart();
+};
+
+export function calculateCartFullQuantity() {
+  let quantity = 0;
+
+  cart.forEach(
+    cartItem => {
+      quantity += cartItem.quantity;
+    }
+  );
+
+  return quantity;
 };
 

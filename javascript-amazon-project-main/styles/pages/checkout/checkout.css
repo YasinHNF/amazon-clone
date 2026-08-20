@@ -119,6 +119,31 @@
   margin-left: 3px;
 }
 
+.quantity-input {
+  display: none;
+}
+
+.quantity-input-visible {
+  display: initial;
+  width: 40px;
+}
+
+.quantity-label-hide {
+  display: none;
+}
+
+.update-quantity-link-hide {
+  display: none;
+}
+
+.save-quantity {
+  display: none;
+}
+
+.save-quantity-visible {
+  display: initial;
+}
+
 @media (max-width: 1000px) {
   .delivery-options {
     /* grid-column: 1 means this element will be placed
@@ -208,4 +233,9 @@
 
   margin-top: 11px;
   margin-bottom: 15px;
+}
+
+.view-products-link {
+  padding: 8px 10px;
+  margin-top: 10px;
 }

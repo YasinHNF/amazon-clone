@@ -5,7 +5,33 @@ import { formatCurrency } from './utils/money.js';
 
 let productsHTML = '';
 const cartQuantityElement = document.querySelector('.js-cart-quantity');
+updateCartQuantity();
 
+
+function checkTimeOutIds(productId) {
+  timeOutIds.forEach(
+  (timeOutInfo, index) => {
+    const { itemId, timeOutId } = timeOutInfo;
+    if (itemId === productId) {
+        clearTimeout(timeOutId);
+        timeOutIds.splice(index, 1);
+        console.log(timeOutInfo);
+      };
+    }
+  );
+};
+
+function updateCartQuantity() {
+  let quantity = 0;
+
+  cart.forEach(
+    cartItem => {
+      quantity += cartItem.quantity;
+    }
+  );
+
+  cartQuantityElement.textContent = quantity;
+};
 
 products.forEach(
     (product, index) => {
@@ -31,7 +57,7 @@ products.forEach(
           </div>
 
           <div class="product-price">
-            $${formatCurrency(priceCents)}
+            $${formatCurrency(priceCents).toFixed(2)}
           </div>
 
           <div class="product-quantity-container">
@@ -72,19 +98,6 @@ document.querySelector('.js-products-grid').innerHTML += productsHTML;
 
 const timeOutIds = [];
 
-function checkTimeOutIds(productId) {
-  timeOutIds.forEach(
-  (timeOutInfo, index) => {
-    const { itemId, timeOutId } = timeOutInfo;
-    if (itemId === productId) {
-        clearTimeout(timeOutId);
-        timeOutIds.splice(index, 1);
-        console.log(timeOutInfo);
-      };
-    }
-  );
-};
-
 document.querySelectorAll('.js-add-to-cart').forEach(
   button => {
     button.addEventListener('click', () => {
@@ -109,6 +122,7 @@ document.querySelectorAll('.js-add-to-cart').forEach(
         );
 
         addToCart(productId, cartQuantityElement);
+        updateCartQuantity();
 
       }
     );
