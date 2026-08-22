@@ -259,7 +259,6 @@ function updateDeliveryDate(productId, deliveryId) {
 
     
     const deliveryOption = deliveryOptions.find(deliveryOption => deliveryOption.id === deliveryId);
-    console.log(deliveryOption);
 
     const timeNow = dayjs();
     const deliveryDate = timeNow.add(
@@ -268,8 +267,6 @@ function updateDeliveryDate(productId, deliveryId) {
     );
 
     const dateString = deliveryDate.format('dddd, MMMM DD');
-
-    console.log(deliveryDate);
 
     deliveryDateElement.innerText = dateString;
 
