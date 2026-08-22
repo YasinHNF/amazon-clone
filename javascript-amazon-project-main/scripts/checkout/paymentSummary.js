@@ -31,7 +31,7 @@ function renderPriceSummary() {
     const fullPriceEl = document.querySelector('.js-full-price');
     
     // Get the numbers
-    const itemsPrice = calculateItemsPrice();
+    const itemsPrice = Math.round(calculateItemsPrice());
 
     let shippingPrice = 0;
 
@@ -39,13 +39,13 @@ function renderPriceSummary() {
         cartItem => {
             const { deliveryOptionId } = cartItem;
             const deliveryOption = deliveryOptions.find(deliveryOptionInfo => deliveryOptionInfo.id === deliveryOptionId);
-            shippingPrice += deliveryOption.priceCents;
+            shippingPrice += Math.round(deliveryOption.priceCents);
         }
     );
 
-    const beforeTaxPrice = itemsPrice + shippingPrice;
-    const taxPrice = beforeTaxPrice * 0.10;
-    const fullPrice = beforeTaxPrice + taxPrice;
+    const beforeTaxPrice = Math.round(itemsPrice + shippingPrice);
+    const taxPrice = Math.round(beforeTaxPrice * 0.10);
+    const fullPrice = Math.round(beforeTaxPrice + taxPrice);
 
     // Put numbers in elements
     itemsPriceEl.textContent = formatCurrency(itemsPrice).toFixed(2);
