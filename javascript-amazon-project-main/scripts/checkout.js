@@ -1,6 +1,15 @@
-import { products } from '../data/products.js'
-import { formatCurrency } from './utils/money.js';
-import { cart, saveCart, deleteFromCart, updateQuantity, calculateCartFullQuantity } from '../data/cart.js';
+import products from '../data/products.js'
+import formatCurrency from './utils/money.js';
+import { 
+    cart, 
+    saveCart, 
+    deleteFromCart, 
+    updateQuantity, 
+    calculateCartFullQuantity } from '../data/cart.js';
+import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
+import deliveryOptions from '../data/deliveryOptions.js';
+
+console.log(dayjs);
 
 const returnHomeLinkNumberEl = document.querySelector('.js-return-home-link');
 const orderSummaryItemsQuantity = document.querySelector('.js-items-quantity-price-summary');
@@ -58,9 +67,23 @@ function renderProductsSummary() {
                     };
                 }
             );
+
+            const deliveryItem = deliveryOptions.find(
+                deliveryOption => cartItem.deliveryOptionId === deliveryOption.id
+            );
+
+            const timeNow = dayjs();
+            const deliveryTime = timeNow.add(
+                deliveryItem.deliveryDays,
+                'day'
+            );
+            const deliveryTimeString = deliveryTime.format(
+                'dddd, MMMM DD'
+            );
+
             const productHTML = `<div class="cart-item-container js-cart-item-container-${productId}">
-                        <div class="delivery-date">
-                        Delivery date: Tuesday, June 21
+                        <div class="delivery-date js-delivery-date">
+                        Delivery date: ${deliveryTimeString}
                         </div>
     
                         <div class="cart-item-details-grid">
@@ -100,45 +123,9 @@ function renderProductsSummary() {
                             <div class="delivery-options-title">
                             Choose a delivery option:
                             </div>
-                            <div class="delivery-option">
-                            <input type="radio" checked
-                                class="delivery-option-input"
-                                name="delivery-option-${productId}">
-                            <div>
-                                <div class="delivery-option-date">
-                                Tuesday, June 21
-                                </div>
-                                <div class="delivery-option-price">
-                                FREE Shipping
-                                </div>
-                            </div>
-                            </div>
-                            <div class="delivery-option">
-                            <input type="radio"
-                                class="delivery-option-input"
-                                name="delivery-option-${productId}">
-                            <div>
-                                <div class="delivery-option-date">
-                                Wednesday, June 15
-                                </div>
-                                <div class="delivery-option-price">
-                                $4.99 - Shipping
-                                </div>
-                            </div>
-                            </div>
-                            <div class="delivery-option">
-                            <input type="radio"
-                                class="delivery-option-input"
-                                name="delivery-option-${productId}">
-                            <div>
-                                <div class="delivery-option-date">
-                                Monday, June 13
-                                </div>
-                                <div class="delivery-option-price">
-                                $9.99 - Shipping
-                                </div>
-                            </div>
-                            </div>
+
+                            ${deliveryOptionsHTML(productId, cartItem)}
+                            
                         </div>
                         </div>
             </div>`
@@ -186,6 +173,7 @@ function renderProductsSummary() {
         }
     );
 
+    // Add event listeners for save links
     document.querySelectorAll('.js-save-quantity').forEach(
         link => {
             link.addEventListener('click', 
@@ -194,6 +182,7 @@ function renderProductsSummary() {
         }
     );
 
+    // Add event listeners for quantity inputs
     document.querySelectorAll('.js-quantity-input').forEach(
         inputEl => {
             inputEl.addEventListener('keydown',
@@ -205,6 +194,49 @@ function renderProductsSummary() {
         }
     );
 };
+
+function deliveryOptionsHTML(productId, cartItem) {
+    let html = '';
+
+    deliveryOptions.forEach(
+        deliveryOption => {
+            const today = dayjs();
+
+            const deliveryDate = today.add(
+                deliveryOption.deliveryDays,
+                'day'
+            );
+            const dateString = deliveryDate.format(
+                'dddd, MMMM D'
+            );
+
+
+            const priceString = deliveryOption.priceCents === 0 
+                ? 'FREE'
+                : `$${formatCurrency(deliveryOption.priceCents)} -`;
+
+            const isChecked = cartItem.deliveryOptionId === deliveryOption.id;
+
+            html += `<div class="delivery-option">
+                        <input type="radio" ${isChecked ? 'checked' : ''}
+                            class="delivery-option-input"
+                            name="delivery-option-${productId}">
+                        <div>
+                            <div class="delivery-option-date">
+                            ${dateString}
+                            </div>
+                            <div class="delivery-option-price">
+                            ${priceString} Shipping
+                            </div>
+                        </div>
+                        </div>`
+            
+        }
+    );
+
+    return html;
+};
+
 
 function updateItemQuantity(productId) {
     const quantityInputEl = document.querySelector(`.js-quantity-input-${productId}`);
@@ -274,6 +306,7 @@ function renderPriceSummary() {
     fullPriceEl.textContent = formatCurrency(fullPrice).toFixed(2);
 
 };
+
 
 renderProductsSummary();
 renderPriceSummary();
