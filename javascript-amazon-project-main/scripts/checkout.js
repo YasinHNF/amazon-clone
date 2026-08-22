@@ -5,11 +5,10 @@ import {
     saveCart, 
     deleteFromCart, 
     updateQuantity, 
-    calculateCartFullQuantity } from '../data/cart.js';
+    calculateCartFullQuantity,
+    updateDeliveryId } from '../data/cart.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import deliveryOptions from '../data/deliveryOptions.js';
-
-console.log(dayjs);
 
 const returnHomeLinkNumberEl = document.querySelector('.js-return-home-link');
 const orderSummaryItemsQuantity = document.querySelector('.js-items-quantity-price-summary');
@@ -82,8 +81,8 @@ function renderProductsSummary() {
             );
 
             const productHTML = `<div class="cart-item-container js-cart-item-container-${productId}">
-                        <div class="delivery-date js-delivery-date">
-                        Delivery date: ${deliveryTimeString}
+                        <div class="delivery-date">
+                        Delivery date: <span class="js-delivery-date" data-product-id="${productId}">${deliveryTimeString}</span>
                         </div>
     
                         <div class="cart-item-details-grid">
@@ -193,6 +192,22 @@ function renderProductsSummary() {
             );
         }
     );
+
+    // Add event listeners for delviery time radio buttons 
+    document.querySelectorAll('.js-delivery-option-input').forEach(
+        deliveryOption => {
+            const { productId, deliveryId } = deliveryOption.dataset;
+
+            deliveryOption.addEventListener('click',
+                () => {
+                    updateDeliveryId(productId, deliveryId);
+                    updateDeliveryDate(productId, deliveryId);
+                    renderPriceSummary();
+
+                }
+            );
+        }
+    );
 };
 
 function deliveryOptionsHTML(productId, cartItem) {
@@ -219,8 +234,10 @@ function deliveryOptionsHTML(productId, cartItem) {
 
             html += `<div class="delivery-option">
                         <input type="radio" ${isChecked ? 'checked' : ''}
-                            class="delivery-option-input"
-                            name="delivery-option-${productId}">
+                            class="delivery-option-input js-delivery-option-input"
+                            name="delivery-option-${productId}"
+                            data-product-id="${productId}"
+                            data-delivery-id="${deliveryOption.id}">
                         <div>
                             <div class="delivery-option-date">
                             ${dateString}
@@ -237,6 +254,26 @@ function deliveryOptionsHTML(productId, cartItem) {
     return html;
 };
 
+function updateDeliveryDate(productId, deliveryId) {
+    const deliveryDateElement = document.querySelector(`.js-delivery-date[data-product-id="${productId}"]`);
+
+    
+    const deliveryOption = deliveryOptions.find(deliveryOption => deliveryOption.id === deliveryId);
+    console.log(deliveryOption);
+
+    const timeNow = dayjs();
+    const deliveryDate = timeNow.add(
+        deliveryOption.deliveryDays,
+        'day'
+    );
+
+    const dateString = deliveryDate.format('dddd, MMMM DD');
+
+    console.log(deliveryDate);
+
+    deliveryDateElement.innerText = dateString;
+
+};
 
 function updateItemQuantity(productId) {
     const quantityInputEl = document.querySelector(`.js-quantity-input-${productId}`);
@@ -258,9 +295,9 @@ function updateItemQuantity(productId) {
     quantityInputEl.classList.remove('quantity-input-visible');
     saveQuantityEl.classList.remove('save-quantity-visible');
 
+    updateQuantity(productId, newQuantity);
     renderPriceSummary();
     updateHTMLQuantities();
-    updateQuantity(productId, newQuantity);
     updateHTMLQuantities();         
 };
 
@@ -293,7 +330,17 @@ function renderPriceSummary() {
     
     // Get the numbers
     const itemsPrice = calculateItemsPrice();
-    const shippingPrice = 0;
+
+    let shippingPrice = 0;
+
+    cart.forEach(
+        cartItem => {
+            const { deliveryOptionId } = cartItem;
+            const deliveryOption = deliveryOptions.find(deliveryOptionInfo => deliveryOptionInfo.id === deliveryOptionId);
+            shippingPrice += deliveryOption.priceCents;
+        }
+    );
+
     const beforeTaxPrice = itemsPrice + shippingPrice;
     const taxPrice = beforeTaxPrice * 0.10;
     const fullPrice = beforeTaxPrice + taxPrice;
@@ -310,5 +357,3 @@ function renderPriceSummary() {
 
 renderProductsSummary();
 renderPriceSummary();
-
-

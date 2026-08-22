@@ -70,3 +70,13 @@ export function calculateCartFullQuantity() {
   return quantity;
 };
 
+export function updateDeliveryId(productId, deliveryCode) {
+  const cartItem = cart.find(
+    product => product.productId === productId
+  );
+
+  cartItem.deliveryOptionId = deliveryCode;
+
+  saveCart();
+
+};
