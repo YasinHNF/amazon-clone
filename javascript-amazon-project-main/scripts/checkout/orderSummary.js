@@ -11,6 +11,7 @@ import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import deliveryOptions from '../../data/deliveryOptions.js';
 import renderPriceSummary from './paymentSummary.js';
 
+
 const returnHomeLinkNumberEl = document.querySelector('.js-return-home-link');
 const orderSummaryItemsQuantity = document.querySelector('.js-items-quantity-price-summary');
 
@@ -73,10 +74,15 @@ function renderProductsSummary() {
             );
 
             const timeNow = dayjs();
-            const deliveryTime = timeNow.add(
+            let deliveryTime = timeNow.add(
                 deliveryItem.deliveryDays,
                 'day'
             );
+            
+            while (isWeekend(deliveryTime)) {
+                deliveryTime = deliveryTime.add(1, 'day');
+            };
+
             const deliveryTimeString = deliveryTime.format(
                 'dddd, MMMM DD'
             );
@@ -218,10 +224,15 @@ function deliveryOptionsHTML(productId, cartItem) {
         deliveryOption => {
             const today = dayjs();
 
-            const deliveryDate = today.add(
+            let deliveryDate = today.add(
                 deliveryOption.deliveryDays,
                 'day'
             );
+
+            while (isWeekend(deliveryDate)) {
+                deliveryDate = deliveryDate.add(1, 'day');
+            };
+
             const dateString = deliveryDate.format(
                 'dddd, MMMM D'
             );
@@ -255,6 +266,14 @@ function deliveryOptionsHTML(productId, cartItem) {
     return html;
 };
 
+function isWeekend(date) {
+    const day = date.format('dddd');
+    
+
+    return day === 'Thursday' || day === 'Friday';
+};
+
+
 function updateDeliveryDate(productId, deliveryId) {
     const deliveryDateElement = document.querySelector(`.js-delivery-date[data-product-id="${productId}"]`);
 
@@ -262,12 +281,17 @@ function updateDeliveryDate(productId, deliveryId) {
     const deliveryOption = deliveryOptions.find(deliveryOption => deliveryOption.id === deliveryId);
 
     const timeNow = dayjs();
-    const deliveryDate = timeNow.add(
+    let deliveryDate = timeNow.add(
         deliveryOption.deliveryDays,
         'day'
     );
 
+    while (isWeekend(deliveryDate)) {
+        deliveryDate = deliveryDate.add(1, 'day');
+    };
+
     const dateString = deliveryDate.format('dddd, MMMM DD');
+    console.log(dateString);
 
     deliveryDateElement.innerText = dateString;
 
