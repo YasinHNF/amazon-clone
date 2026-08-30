@@ -1,4 +1,4 @@
-export let cart = [];
+export let cart;
 
 loadCart();
 
@@ -12,17 +12,13 @@ export function loadCart() {
   cart = JSON.parse(localStorage.getItem('cart')) || [];
 };
 
-
-export function addToCart(productId) {
-  const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
-  const selectedQuantity = Number(quantitySelector.value);
-
+export function addToCart(productId, quantity = 1) {
   let productExists = false;
 
   cart.forEach(
     cartItem => {
       if (cartItem.productId === productId) {
-        cartItem.quantity += selectedQuantity;
+        cartItem.quantity += quantity;
         productExists = true;
       };
     }
@@ -32,16 +28,14 @@ export function addToCart(productId) {
     cart.push(
       {
         productId,
-        quantity: selectedQuantity,
+        quantity: quantity,
         deliveryOptionId: '1'
       }
     );
   };
 
   saveCart();
-
 };
-
 
 export function deleteFromCart(productId) {
   const filteredCart = cart.filter(

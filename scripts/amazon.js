@@ -120,8 +120,11 @@ document.querySelectorAll('.js-add-to-cart').forEach(
             timeOutId
           }
         );
+        const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
+        const selectedQuantity = Number(quantitySelector.value);
 
-        addToCart(productId, cartQuantityElement);
+
+        addToCart(productId, selectedQuantity);
         updateCartQuantity();
 
       }
