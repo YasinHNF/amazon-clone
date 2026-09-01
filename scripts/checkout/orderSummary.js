@@ -93,11 +93,11 @@ function renderProductsSummary() {
                             src="${productImage}">
     
                         <div class="cart-item-details">
-                            <div class="product-name">
+                            <div class="product-name js-product-name" data-product-id="${productId}">
                             ${productName}
                             </div>
-                            <div class="product-price">
-                            $${productPrice}
+                            <div class="product-price"">
+                            $<span class="js-product-price" data-product-id="${productId}>${productPrice}</span>
                             </div>
                             <div class="product-quantity js-product-quantity">
                             <span>

@@ -1,5 +1,6 @@
 import renderProductsSummary from '../../scripts/checkout/orderSummary.js';
 import { loadCart, cart } from '../../data/cart.js';
+import products from '../../data/products.js';
 
 describe('test suite: renderOrderSummary', () => {
     const productId1 = 'id1';
@@ -50,8 +51,39 @@ describe('test suite: renderOrderSummary', () => {
             const { productId, quantity } = cartItem;
             const quantityLabel = Number(document.querySelector(`.js-quantity-label-${productId}`).textContent);
             expect(quantityLabel).toEqual(quantity);
-
         });
+
+        document.querySelectorAll('.js-product-name').forEach(
+            nameEl => {
+                const showingName = nameEl.textContent;
+                const { productId } = nameEl.dataset;
+                const productName = products.find(
+                    product => {
+                        const { id, name } = product;
+                        if (id === productId) {
+                            return true;
+                        };
+                    }
+                ).name;
+                expect(showingName).toEqual(productName);
+            }
+        );
+
+        document.querySelectorAll(`.js-product-price`).forEach(
+            productEl => {
+                const showingPriceCents = Number(productEl.textContent) * 100;
+                const { productId } = productEl.dataset;
+                const productPriceCents = products.find(
+                    product => {
+                        const { id } = product.dataset;
+                        if (id === productId) {
+                            return true;
+                        };
+                    }
+                ).priceCents;
+                expect(showingPriceCents).toEqual(productPriceCents);
+            }
+        );
     });
 
 

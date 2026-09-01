@@ -3,6 +3,10 @@ import { addToCart, cart, loadCart } from '../../data/cart.js';
 const productId = 'id1';
 
 describe('test suite: addToCart', () => {
+    beforeEach(() => {
+        spyOn(localStorage, 'setItem')
+    });
+
     it('adds an existing product to the cart', () => {
         spyOn(localStorage, 'getItem').and.callFake(
             () => {
@@ -18,12 +22,13 @@ describe('test suite: addToCart', () => {
             }
         );
 
-        spyOn(localStorage, 'setItem');
-
-
         loadCart();
 
+        expect(localStorage.getItem).toHaveBeenCalledWith('cart');
+
         addToCart(productId, 1);
+
+        expect(localStorage.setItem).toHaveBeenCalledWith('cart', JSON.stringify(cart));
 
         expect(localStorage.setItem).toHaveBeenCalledTimes(1);
 
@@ -42,12 +47,11 @@ describe('test suite: addToCart', () => {
         spyOn(localStorage, 'getItem').and.callFake(() => {
             return JSON.stringify([]);
         });
-
-        spyOn(localStorage, 'setItem');
-
         loadCart();
 
         addToCart(productId);
+
+        expect(localStorage.setItem).toHaveBeenCalledWith('cart', JSON.stringify(cart));
 
         expect(cart.length).toEqual(1);
 
