@@ -11,17 +11,11 @@ import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import deliveryOptions from '../../data/deliveryOptions.js';
 import renderPriceSummary from './paymentSummary.js';
 
-
-const returnHomeLinkNumberEl = document.querySelector('.js-return-home-link');
-const orderSummaryItemsQuantity = document.querySelector('.js-items-quantity-price-summary');
-
-const productsContainerEl = document.querySelector('.js-order-summary');
-
-function updateHTMLQuantities() {
-    // Updates both returnHomeLinkNumberEl & orderSummaryItemsQuantity
+function updateReturnLink() {
+    // Updates both returnHomeLinkNumberElement
+    const returnHomeLinkNumberEl = document.querySelector('.js-return-home-link');
     const itemsQuantity = calculateCartFullQuantity();
     returnHomeLinkNumberEl.textContent = `${itemsQuantity}`;
-    orderSummaryItemsQuantity.textContent = `${itemsQuantity}`;
 };
 
 function deleteFromPage(productId, quantity) {
@@ -36,6 +30,8 @@ function deleteFromPage(productId, quantity) {
 };
 
 function emptyCartDialog() {
+    const productsContainerEl = document.querySelector('.js-order-summary');
+
     const HTML = `
     <p>Your cart is empty.</p>
     <a href="./amazon.html"><button class="button-primary view-products-link" >View products</button></a>
@@ -87,7 +83,7 @@ function renderProductsSummary() {
                 'dddd, MMMM DD'
             );
 
-            const productHTML = `<div class="cart-item-container js-cart-item-container-${productId}">
+            const productHTML = `<div class="cart-item-container js-cart-item-container js-cart-item-container-${productId}">
                         <div class="delivery-date">
                         Delivery date: <span class="js-delivery-date" data-product-id="${productId}">${deliveryTimeString}</span>
                         </div>
@@ -103,9 +99,9 @@ function renderProductsSummary() {
                             <div class="product-price">
                             $${productPrice}
                             </div>
-                            <div class="product-quantity">
+                            <div class="product-quantity js-product-quantity">
                             <span>
-                                Quantity: <span class="quantity-label quantity-label js-quantity-label-${productId}">${quantity}</span>
+                                Quantity: <span class="quantity-label js-quantity-label-${productId}">${quantity}</span>
                             </span>
 
                             <input type="number" class="quantity-input js-quantity-input js-quantity-input-${productId}" value="${quantity}" min="1"
@@ -139,8 +135,9 @@ function renderProductsSummary() {
         }
     );
 
-    updateHTMLQuantities();
+    updateReturnLink();
     
+    const productsContainerEl = document.querySelector('.js-order-summary');
     productsContainerEl.innerHTML += productsHTML;
 
     // Add event listener for delete links
@@ -151,7 +148,7 @@ function renderProductsSummary() {
                     const { productId, productQuantity } = link.dataset;
                     deleteFromCart(productId);
                     deleteFromPage(productId, productQuantity);
-                    updateHTMLQuantities();
+                    updateReturnLink();
                 }
             );
         }
@@ -291,7 +288,6 @@ function updateDeliveryDate(productId, deliveryId) {
     };
 
     const dateString = deliveryDate.format('dddd, MMMM DD');
-    console.log(dateString);
 
     deliveryDateElement.innerText = dateString;
 
@@ -319,8 +315,7 @@ function updateItemQuantity(productId) {
 
     updateQuantity(productId, newQuantity);
     renderPriceSummary();
-    updateHTMLQuantities();
-    updateHTMLQuantities();         
+    updateReturnLink();      
 };
 
 export default renderProductsSummary;

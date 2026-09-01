@@ -15,7 +15,6 @@ function checkTimeOutIds(productId) {
     if (itemId === productId) {
         clearTimeout(timeOutId);
         timeOutIds.splice(index, 1);
-        console.log(timeOutInfo);
       };
     }
   );
