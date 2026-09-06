@@ -97,7 +97,7 @@ function renderProductsSummary() {
                             ${productName}
                             </div>
                             <div class="product-price"">
-                            $<span class="js-product-price" data-product-id="${productId}>${productPrice}</span>
+                            $<span class="js-product-price" data-product-id="${productId}">${productPrice}</span>
                             </div>
                             <div class="product-quantity js-product-quantity">
                             <span>

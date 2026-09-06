@@ -65,7 +65,7 @@ describe('test suite: renderOrderSummary', () => {
                         };
                     }
                 ).name;
-                expect(showingName).toEqual(productName);
+                expect(showingName.trim()).toEqual(productName);
             }
         );
 
@@ -75,12 +75,13 @@ describe('test suite: renderOrderSummary', () => {
                 const { productId } = productEl.dataset;
                 const productPriceCents = products.find(
                     product => {
-                        const { id } = product.dataset;
+                        const { id } = product;
                         if (id === productId) {
                             return true;
                         };
                     }
                 ).priceCents;
+
                 expect(showingPriceCents).toEqual(productPriceCents);
             }
         );
@@ -99,5 +100,9 @@ describe('test suite: renderOrderSummary', () => {
         expect(cart[0].deliveryOptionId).toEqual('2');
         expect(document.querySelectorAll('.js-cart-item-container').length).toEqual(1);
 
+    });
+
+    it('updates the deliveryOption', () => {
+        
     });
 });
