@@ -59,7 +59,7 @@ function renderProductsSummary() {
                     if (product.id === productId) {
                         productImage = product.image;
                         productName = product.name;
-                        productPrice = formatCurrency(product.priceCents).toFixed(2);
+                        productPrice = product.getPrice();
                         return;
                     };
                 }

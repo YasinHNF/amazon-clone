@@ -1,4 +1,27 @@
-export default [
+import { formatCurrency } from "../scripts/utils/money.js";
+
+class Product {
+  constructor(productDetails) {
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating;
+    this.priceCents = productDetails.priceCents;
+  }
+
+  getStarsUrl() {
+    return `images/ratings/rating-${this.rating.stars * 10}.png`;
+  }
+
+  getPrice() {
+    return `${formatCurrency(this.priceCents).toFixed(2)}`;
+  }
+
+};
+
+
+
+const products =  [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     image: "images/products/athletic-cotton-socks-6-pairs.jpg",
@@ -679,3 +702,10 @@ export default [
   priceCents: 1500
   }
 ];
+
+
+const classifiedProducts = products.map(
+  productDetails => new Product(productDetails)
+);
+
+export default classifiedProducts;
