@@ -17,6 +17,24 @@ class Product {
     return `${formatCurrency(this.priceCents).toFixed(2)}`;
   }
 
+  extraInfoHTML() {
+    return ''
+  }
+
+};
+
+class Clothing extends Product {
+  constructor(productDetails) {
+    super(productDetails);
+    this.sizeChartLink = productDetails.sizeChartLink;
+  }
+
+  extraInfoHTML() {
+    return `
+    <a href="${this.sizeChartLink}" target="_blank">Size chart</a>
+    `;
+
+  }
 };
 
 
@@ -705,7 +723,7 @@ const products =  [
 
 
 const classifiedProducts = products.map(
-  productDetails => new Product(productDetails)
+  productDetails => productDetails.type === 'clothing' ? new Clothing(productDetails) : new Product(productDetails)
 );
 
 export default classifiedProducts;
