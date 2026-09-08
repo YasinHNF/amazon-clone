@@ -37,6 +37,33 @@ class Clothing extends Product {
   }
 };
 
+/*
+const date = new Date();
+
+console.log(date.toLocaleTimeString())
+*/
+
+/*
+const object2 = {
+  a: 1,
+  b: this.a
+};
+console.log(object2.method());
+*/
+
+/*
+function logThis() {
+  console.log(this);
+};
+
+logThis.call();
+
+
+const dool = () => {
+  console.log(this);
+}
+*/
+
 
 
 const products =  [
