@@ -102,7 +102,4 @@ describe('test suite: renderOrderSummary', () => {
 
     });
 
-    it('updates the deliveryOption', () => {
-        
-    });
 });
