@@ -129,7 +129,7 @@ function renderProductsSummary() {
                             ${deliveryOptionsHTML(productId, cartItem)}
                             
                         </div>
-                        </div>
+                    </div>
             </div>`
             productsHTML += productHTML;
         }
