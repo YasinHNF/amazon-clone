@@ -1,9 +1,8 @@
 import { cart } from '../../data/cart.js';
 import deliveryOptions from '../../data/deliveryOptions.js';
-import products from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 
-function calculateItemsPrice() {
+function calculateItemsPrice(products) {
     let fullPrice = 0;
 
     cart.forEach(
@@ -26,7 +25,7 @@ function displayPrice(price) {
     return formatCurrency(price).toFixed(2)
 };
 
-export function renderPriceSummary() {
+export function renderPriceSummary(products) {
     // const itemsPriceEl = document.querySelector('.js-items-price');
     // const shippingPriceEl = document.querySelector('.js-shipping-price');
     // const beforeTaxPriceEl = document.querySelector('.js-before-tax-price');
@@ -34,7 +33,7 @@ export function renderPriceSummary() {
     // const fullPriceEl = document.querySelector('.js-full-price');
     
     // Get the numbers
-    const itemsPrice = Math.round(calculateItemsPrice());
+    const itemsPrice = Math.round(calculateItemsPrice(products));
 
     let shippingPrice = 0;
 

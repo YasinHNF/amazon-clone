@@ -1,4 +1,3 @@
-import products from '../../data/products.js'
 import { formatCurrency } from '../utils/money.js';
 import { 
     cart, 
@@ -18,12 +17,12 @@ function updateReturnLink() {
     returnHomeLinkNumberEl.textContent = `${itemsQuantity}`;
 };
 
-function deleteFromPage(productId, quantity) {
+function deleteFromPage(productId, products) {
     const productElement = document.querySelector(`.js-cart-item-container-${productId}`);
     productElement.remove();
     // decreasing the items quantity
 
-    renderPriceSummary();
+    renderPriceSummary(products);
     if (calculateCartFullQuantity() === 0) {
         emptyCartDialog();
     };
@@ -39,7 +38,7 @@ function emptyCartDialog() {
     productsContainerEl.innerHTML = HTML;
 };
 
-function renderProductsSummary() {
+function renderProductsSummary(products) {
     let productsHTML = '';
 
     if (cart.length === 0) {
@@ -147,7 +146,7 @@ function renderProductsSummary() {
                 () => {
                     const { productId, productQuantity } = link.dataset;
                     deleteFromCart(productId);
-                    deleteFromPage(productId, productQuantity);
+                    deleteFromPage(productId, products);
                     updateReturnLink();
                 }
             );
@@ -180,7 +179,7 @@ function renderProductsSummary() {
     document.querySelectorAll('.js-save-quantity').forEach(
         link => {
             link.addEventListener('click', 
-                () => updateItemQuantity(link.dataset.productId)
+                () => updateItemQuantity(link.dataset.productId, products)
             );
         }
     );
@@ -293,7 +292,7 @@ function updateDeliveryDate(productId, deliveryId) {
 
 };
 
-function updateItemQuantity(productId) {
+function updateItemQuantity(productId, products) {
     const quantityInputEl = document.querySelector(`.js-quantity-input-${productId}`);
     const newQuantity = Number(quantityInputEl.value);  
     
@@ -314,7 +313,7 @@ function updateItemQuantity(productId) {
     saveQuantityEl.classList.remove('save-quantity-visible');
 
     updateQuantity(productId, newQuantity);
-    renderPriceSummary();
+    renderPriceSummary(products);
     updateReturnLink();      
 };
 
