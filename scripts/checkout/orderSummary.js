@@ -205,7 +205,7 @@ function renderProductsSummary(products) {
                 () => {
                     updateDeliveryId(productId, deliveryId);
                     updateDeliveryDate(productId, deliveryId);
-                    renderPriceSummary();
+                    renderPriceSummary(products);
 
                 }
             );

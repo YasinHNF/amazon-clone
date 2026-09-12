@@ -4,6 +4,8 @@ import { formatCurrency } from '../utils/money.js';
 
 function calculateItemsPrice(products) {
     let fullPrice = 0;
+    console.log(products);
+
 
     cart.forEach(
         cartItem => {
