@@ -35,11 +35,10 @@ async function loadPage()  {
 
     await new Promise((resolve, reject) => {
         loadCart2(() => {
-            reject();
             resolve();
         });
     }).catch((error) => {
-        console.log('Error!');
+        console.log('Error!', error);
     });
 
     renderProductsSummary(products);

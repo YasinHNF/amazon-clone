@@ -90,3 +90,7 @@ export function loadCart2(callback) {
   xhr.send();
 
 };
+
+export function deleteCart(){
+  localStorage.removeItem('cart');
+};
