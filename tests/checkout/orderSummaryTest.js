@@ -1,6 +1,6 @@
 import renderProductsSummary from '../../scripts/checkout/orderSummary.js';
 import { loadCart, cart } from '../../data/cart.js';
-import { loadProducts } from '../../data/products.js';
+import { loadProducts, loadProductsFetch } from '../../data/products.js';
 
 let products;
 
@@ -37,7 +37,7 @@ describe('test suite: renderOrderSummary', () => {
 
             loadCart();
 
-            loadProducts(
+            loadProductsFetch().then(
                 (productsArray) => {
                     products = productsArray;
                     renderProductsSummary(productsArray);

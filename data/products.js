@@ -83,6 +83,40 @@ const dool = () => {
 }
 */
 
+export function loadProductsFetch() {
+  const promise = fetch(
+    'https://supersimplebackend.dev/products'
+  ).then(
+    response => response.json()
+  ).then(
+    (responseData) => {
+      const classifiedProducts = responseData.map(
+        productDetails => {
+          if (productDetails.type === 'clothing') {
+            return new Clothing(productDetails);
+
+          } else if (productDetails.type === 'appliance') {
+            return new Appliance(productDetails);
+          }
+
+          return new Product(productDetails);
+        }
+      );
+
+      return classifiedProducts;
+    }
+  );
+
+  return promise;
+}
+
+/*
+loadProductsFetch().then(() => {
+    console.log('next step')
+  }
+);
+*/
+
 export function loadProducts(callback) {
   const xhr = new XMLHttpRequest();
 
