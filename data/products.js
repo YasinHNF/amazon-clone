@@ -105,7 +105,9 @@ export function loadProductsFetch() {
 
       return classifiedProducts;
     }
-  );
+  ).catch((error) => {
+    console.log('Error:', error);
+  });
 
   return promise;
 }
@@ -137,12 +139,16 @@ export function loadProducts(callback) {
     );
     callback(classifiedProducts);
 
-  }
-);
+  });
+
+  xhr.addEventListener('error', () => {
+    console.log('error. Please try again later');
+  });
 
 
   xhr.open('GET', 'https://supersimplebackend.dev/products');
   xhr.send();
 
 };
+
 

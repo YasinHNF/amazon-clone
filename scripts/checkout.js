@@ -25,12 +25,21 @@ new Promise(
 
 
 async function loadPage()  {
-    const products = await loadProductsFetch();
+    let products;
+    try {
+        products = await loadProductsFetch();        
+    }
+    catch (error) {
+        console.log(error);
+    };
 
-    await new Promise((resolve) => {
+    await new Promise((resolve, reject) => {
         loadCart2(() => {
+            reject();
             resolve();
         });
+    }).catch((error) => {
+        console.log('Error!');
     });
 
     renderProductsSummary(products);
