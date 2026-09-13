@@ -23,30 +23,38 @@ new Promise(
 );
 */
 
-Promise.all([
-    loadProductsFetch().then(
-        (products) => {
-            return new Promise(
-                (resolve) => {
-                    resolve(products);
-                }
-            );
-        }
-    ),
 
-    new Promise((resolve) => {
-        loadCart2(
-            () => resolve()
-        );
-    })]
+async function loadPage()  {
+    const products = await loadProductsFetch();
 
-).then(
-    (values) => {
-        renderPriceSummary(values[0]);
-        renderProductsSummary(values[0]);
-    }
-);
+    await new Promise((resolve) => {
+        loadCart2(() => {
+            resolve();
+        });
+    });
 
+    renderProductsSummary(products);
+    renderPriceSummary(products);
+};
+
+loadPage();
+
+
+// const values = await Promise.all([
+//     loadProductsFetch(),
+
+//     new Promise((resolve) => {
+//         loadCart2(
+//             () => resolve()
+//         );
+//     })]
+
+// );
+
+// const products = values[0];
+
+// renderPriceSummary(products);
+// renderProductsSummary(products);
 
 // new Promise((resolve) => {
 //     loadProducts(
