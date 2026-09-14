@@ -91,6 +91,13 @@ export function loadCart2(callback) {
 
 };
 
+export async function loadCart2Fetch() {
+  const response = await fetch('https://supersimplebackend.dev/cart');
+  const data = await response.text();
+
+  console.log(data);
+};
+
 export function deleteCart(){
   localStorage.removeItem('cart');
 };

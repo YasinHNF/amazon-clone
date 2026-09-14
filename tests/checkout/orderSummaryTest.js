@@ -10,7 +10,7 @@ describe('test suite: renderOrderSummary', () => {
     const productId2 = 'aad29d11-ea98-41ee-9285-b916638cac4a';
 
     beforeEach(
-        (done) => {
+        async() => {
             spyOn(localStorage, 'getItem').and.callFake(() => {
                 return JSON.stringify(
                     [
@@ -37,13 +37,9 @@ describe('test suite: renderOrderSummary', () => {
 
             loadCart();
 
-            loadProductsFetch().then(
-                (productsArray) => {
-                    products = productsArray;
-                    renderProductsSummary(productsArray);
-                    done();
-                }
-            );
+            const productsArray = await loadProductsFetch();
+            products = productsArray;
+            renderProductsSummary(productsArray);
             
         }
     );

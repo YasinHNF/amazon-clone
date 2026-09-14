@@ -1,7 +1,7 @@
 import renderProductsSummary from './checkout/orderSummary.js';
 import renderPriceSummary from './checkout/paymentSummary.js';
 import { loadProductsFetch } from '../data/products.js';
-import { loadCart2 } from '../data/cart.js';
+import { loadCart2, loadCart2Fetch } from '../data/cart.js';
 
 // import '../data/backend-practice.js';
 // import '../data/car.js';
@@ -27,19 +27,21 @@ new Promise(
 async function loadPage()  {
     let products;
     try {
-        products = await loadProductsFetch();        
+        await Promise.all([
+            loadProductsFetch().then(
+                (response) => products = response
+            ),
+
+            new Promise((resolve) => {
+                loadCart2Fetch();
+                resolve();
+            })
+        ])
     }
     catch (error) {
         console.log(error);
     };
 
-    await new Promise((resolve, reject) => {
-        loadCart2(() => {
-            resolve();
-        });
-    }).catch((error) => {
-        console.log('Error!', error);
-    });
 
     renderProductsSummary(products);
     renderPriceSummary(products);
