@@ -218,3 +218,16 @@
     padding: 12px;
   }
 }
+
+.order-button {
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 30px;
+  margin-top: 10px;
+  background-color: rgb(255, 216, 20);
+}
+
+.buy-again-button-disabled {
+  pointer-events: none;
+}

@@ -7,15 +7,20 @@ export function loadOrders() {
 };
 
 export function saveOrders() {
-    localStorage.setItem('orders', JSON.stringify(orders))
+    localStorage.setItem('orders', JSON.stringify(orders));
 };
 
 export function addOrder(order) {
-    const sameId = orders.find(value => value.id === order.id);
-    if (sameId){
-        throw 'There is already an order with this id';
-    };
+    try {
+        const sameId = orders.find(value => value.id === order.id);
+        if (sameId){
+            alert(sameId)
+            throw 'There is already an order with this id';
+        };
 
-    orders.unshift(order);
-    saveOrders();
+        orders.unshift(order);
+        saveOrders();
+    } catch (error) {
+        alert(`Error : ${error}`);
+    }
 };

@@ -1,12 +1,10 @@
-import { cart, saveCart, deleteCart } from '../../data/cart.js';
+import { cart, addToCart, deleteCart, calculateCartFullQuantity } from '../../data/cart.js';
 import deliveryOptions from '../../data/deliveryOptions.js';
-import { formatCurrency } from '../utils/money.js';
+import { displayPrice } from '../utils/money.js';
 import { addOrder } from '../../data/orders.js';
 
 function calculateItemsPrice(products) {
     let fullPrice = 0;
-    console.log(products);
-
 
     cart.forEach(
         cartItem => {
@@ -22,10 +20,6 @@ function calculateItemsPrice(products) {
         }
     );
     return fullPrice;
-};
-
-function displayPrice(price) {
-    return formatCurrency(price).toFixed(2)
 };
 
 export function renderPriceSummary(products) {
@@ -54,6 +48,8 @@ export function renderPriceSummary(products) {
 
     const paymentSummaryEl = document.querySelector('.js-payment-summary');
 
+    const cartQuantity = calculateCartFullQuantity();
+
     // render HTML 
     const html = `
       <div class="payment-summary-row">
@@ -81,14 +77,14 @@ export function renderPriceSummary(products) {
         <div class="payment-summary-money">$<span class="js-full-price">${displayPrice(fullPrice)}</span></div>
       </div>
 
-      <button class="place-order-button button-primary js-place-order-button">
+      <button class="place-order-button button-primary js-place-order-button ${!cartQuantity ? 'disabled' : ''}" ${!cartQuantity ? 'disabled' : ''}>
         Place your order
       </button>
-      `
-      ;
-
+      `;
     paymentSummaryEl.innerHTML = html;
-
+    if (!cartQuantity) {
+      return
+    };
     document.querySelector('.js-place-order-button')
       .addEventListener('click', async () => {
         try {
@@ -101,10 +97,10 @@ export function renderPriceSummary(products) {
               cart: cart
             })
           });
+
           const order = await response.json();
           addOrder(order);
-          console.log(order);
-          // deleteCart();
+          deleteCart();
 
         } catch (error) {
           alert(`Unxepected error: ${error}`);

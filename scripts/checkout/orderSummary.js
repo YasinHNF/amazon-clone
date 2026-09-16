@@ -190,7 +190,7 @@ function renderProductsSummary(products) {
             inputEl.addEventListener('keydown',
                 event => {
                     if (event.key === 'Enter') 
-                        updateItemQuantity(inputEl.dataset.productId);
+                        updateItemQuantity(inputEl.dataset.productId, products);
                 }
             );
         }

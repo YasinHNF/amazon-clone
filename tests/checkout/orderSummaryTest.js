@@ -66,7 +66,6 @@ describe('test suite: renderOrderSummary', () => {
                 const productName = products.find(
                     product => productId === product.id
                 ).name;
-                console.log(productName);
                 expect(showingName.trim()).toEqual(productName);
             }
         );

@@ -79,7 +79,6 @@ export function loadCart2(callback) {
   const xhr = new XMLHttpRequest();
 
   xhr.addEventListener('load', () => {
-    console.log(xhr.response);
     callback();
 
   }
@@ -94,8 +93,6 @@ export function loadCart2(callback) {
 export async function loadCart2Fetch() {
   const response = await fetch('https://supersimplebackend.dev/cart');
   const data = await response.text();
-
-  console.log(data);
 };
 
 export function deleteCart(){
