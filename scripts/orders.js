@@ -1,4 +1,4 @@
-import { orders, loadOrders } from "../data/orders.js"; 
+import { orders } from "../data/orders.js"; 
 import { loadCart, calculateCartFullQuantity, addToCart } from "../data/cart.js";
 import { displayPrice } from "./utils/money.js";
 import { loadProductsFetch } from "../data/products.js";
@@ -19,8 +19,6 @@ function updateCartquantity() {
 };
 
 updateCartquantity();
-
-loadOrders();
 
 
 const products = await loadProductsFetch();
